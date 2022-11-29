@@ -36,14 +36,23 @@ namespace TechJobsPersistentAutograded.Controllers
         [HttpGet("/Add")]
         public IActionResult AddJob()
         {
-            return View();
+            List<Employer> possibleEmployers = _repo.GetAllEmployers().ToList();
+            List<Skill> possibleSkills = _repo.GetAllSkills().ToList();
+            AddJobViewModel viewModel = new AddJobViewModel(possibleEmployers, possibleSkills);
+            return View(viewModel);
         }
 
 
-        public IActionResult ProcessAddJobForm()
+        public IActionResult ProcessAddJobForm(AddJobViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
+                Job theJob = new Job
+                {
+                    Name = viewModel.Name,
+                    Employer = _repo.FindEmployerById(viewModel.EmployerId),
+                    EmployerId = viewModel.EmployerId,
+                };
                 return Redirect("Index");
             }
 
