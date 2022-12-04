@@ -14,7 +14,7 @@ namespace TechJobsPersistentAutograded.Controllers
 {
     public class SkillController : Controller
     {
-        private JobRepository _repo;
+        public JobRepository _repo;
 
         public SkillController(JobRepository repo)
         {
@@ -64,6 +64,11 @@ namespace TechJobsPersistentAutograded.Controllers
                 int jobId = viewModel.JobId;
                 int skillId = viewModel.SkillId;
 
+                if (skillId == 0)
+                {
+                    return Redirect("~/Skill/Add");
+                }
+                
                 List<JobSkill> existingItems = _repo.FindJobsSkillsBySkillAndJob(jobId, skillId).ToList();
 
                 if (existingItems.Count == 0)

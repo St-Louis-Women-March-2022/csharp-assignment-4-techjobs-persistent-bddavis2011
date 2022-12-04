@@ -9,11 +9,13 @@ namespace TechJobsPersistentAutograded.ViewModels
     public class AddJobViewModel
     {
         [Required]
-        [StringLength(100, MinimumLength = 1, ErrorMessage = "Name must contain 1-100 characters")]
+        [StringLength(50, MinimumLength = 1, ErrorMessage = "Name must contain 1-50 characters")]
         public string Name { get; set; }
+        [Required(ErrorMessage ="EmployerID is required.")]
         public int EmployerId { get; set; }
         public List<SelectListItem> Employers { get; set; }
         public int SkillId { get; set; }
+        [Required]
         public List<Skill> Skills { get; set; }
 
         public AddJobViewModel()
@@ -23,17 +25,17 @@ namespace TechJobsPersistentAutograded.ViewModels
         public AddJobViewModel(List<Employer> possibleEmployers, List<Skill> skills)
         {
             Employers = new List<SelectListItem>();
-            foreach (var emp in possibleEmployers)
+            foreach (var employer in possibleEmployers)
             {
                 Employers.Add(new SelectListItem
                 {
-                    Value = emp.Id.ToString(),
-                    Text = emp.Name
+                    Value = employer.Id.ToString(),
+                    Text = employer.Name
                 });
             }
 
             Skills = new List<Skill>();
-            foreach (var skill in skills)
+            foreach(var skill in skills)
             {
                 Skills.Add(skill);
             }

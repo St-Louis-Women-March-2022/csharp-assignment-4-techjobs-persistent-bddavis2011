@@ -5,7 +5,3 @@ where table_name = "jobs";
 select employers.Name as Employer, Location from employers
 where Location = "St. Louis";
 --Part 3
-select skills.Name, skills.Description from skills
-inner join jobskills on skills.ID = jobskills.SkillId
-group by skills.name
-order by skills.name asc;

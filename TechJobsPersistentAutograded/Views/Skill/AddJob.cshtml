@@ -12,7 +12,7 @@
 
         <label asp-for="SkillId">Skill</label>
 
-        <select asp-for="SkillId" asp-items="Model.Skills"></select>
+        <select asp-for="SkillId" asp-items="@Model.Skills"></select>
 
         <span asp-validation-for="SkillId"></span>
 
