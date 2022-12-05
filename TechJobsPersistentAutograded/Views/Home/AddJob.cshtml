@@ -22,7 +22,7 @@
     <div class="form-group">
         @foreach(var skillObj in Model.Skills)
         {
-            <label><input type="checkbox" name="selectedSkills" value="@skillObj.Id" /> @skillObj.Name &nbsp</label>
+            <label><input type="checkbox" name="selectedSkills" value="@skillObj.Id" /> @skillObj.Name</label>
         }
         <a asp-area"" asp-controller="skill" asp-action="Add">Add Skill</a>
     </div>
