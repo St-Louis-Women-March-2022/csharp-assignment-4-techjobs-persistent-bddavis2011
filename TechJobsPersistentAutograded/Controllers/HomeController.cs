@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Logging;
 using TechJobsPersistentAutograded.Models;
 using TechJobsPersistentAutograded.ViewModels;
@@ -36,18 +37,37 @@ namespace TechJobsPersistentAutograded.Controllers
         [HttpGet("/Add")]
         public IActionResult AddJob()
         {
-            return View();
+            List<Employer> possibleEmployers = _repo.GetAllEmployers().ToList();
+            List<Skill> possibleSkills = _repo.GetAllSkills().ToList();
+            AddJobViewModel viewModel = new AddJobViewModel(possibleEmployers, possibleSkills);
+            return View(viewModel);
         }
 
-
-        public IActionResult ProcessAddJobForm()
+        public IActionResult ProcessAddJobForm(AddJobViewModel addJobViewModel, string[] selectedSkills)
         {
             if (ModelState.IsValid)
             {
+                Job theJob = new Job
+                {
+                    Name = addJobViewModel.Name,
+                    Employer = _repo.FindEmployerById(addJobViewModel.EmployerId),
+                    EmployerId = addJobViewModel.EmployerId,
+                };
+                _repo.AddNewJob(theJob);
+                foreach(string skill in selectedSkills)
+                {
+                    JobSkill theJobSkill = new JobSkill
+                    {
+                        Job = theJob,
+                        SkillId = int.Parse(skill)
+                    };
+                    _repo.AddNewJobSkill(theJobSkill);
+                }
+                _repo.SaveChanges();
                 return Redirect("Index");
             }
 
-            return View("Add");
+            return View("AddJob", new AddJobViewModel(_repo.GetAllEmployers().ToList(), _repo.GetAllSkills().ToList()));
         }
 
 
